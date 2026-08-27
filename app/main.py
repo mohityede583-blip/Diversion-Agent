@@ -35,7 +35,7 @@ app.add_middleware(TracingMiddleware)
 @app.on_event("startup")
 async def startup_event():
     # Bootstrap the RAG knowledge base in ChromaDB with the historical seed list
-    # rag_engine.seed_historical_incidents(get_seed_resolved_incidents())
+    rag_engine.seed_historical_incidents()
     asyncio.create_task(periodic_snow_pull())
 
 # Background task to periodically pull incidents (simulate ServiceNow webhook/polling)
@@ -43,7 +43,7 @@ async def periodic_snow_pull():
     while True:
         try:
             print("Running periodic ServiceNow incident sync...")
-            new_incidents = servicenow_client.pull_new_incidents()
+            new_incidents = servicenow_client.fetch_incidents_from_api()
             if new_incidents:
                 print(f"Ingested {len(new_incidents)} new unassigned incident(s).")
         except Exception as e:

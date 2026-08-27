@@ -19,9 +19,9 @@ class ServiceNowClient:
             # Real API call
             headers = {"Accept": "application/json"}
             query_url = f"{self.url}/api/now/table/incident"
-            five_mins_ago = datetime.now(timezone.utc) - timedelta(minutes=2)
+            last_min = datetime.now(timezone.utc) - timedelta(minutes=1)
             current_time=datetime.now(timezone.utc)
-            formatted_time_five = five_mins_ago.strftime("%Y-%m-%d %H:%M:%S")
+            formatted_time_five = last_min.strftime("%Y-%m-%d %H:%M:%S")
             formatted_time_current = current_time.strftime("%Y-%m-%d %H:%M:%S")
             params = {
                 "sysparm_limit": 20,
@@ -34,7 +34,7 @@ class ServiceNowClient:
                 if resp.status_code == 200:
                     results = resp.json().get("result", [])
                     # print("GET SNOW INCIDENT CALL:\n",json.dumps(results,indent=4))
-
+                    print(f"pulled {len(results)} incidents from API which are created on last minute")
                     # MAP RESULTS
         except Exception as e:
             print(f"Failed to fetch from real ServiceNow API: {e}. Falling back to simulation...")
