@@ -6,6 +6,7 @@ class Settings(BaseSettings):
     # App General Settings
     APP_NAME: str = "ServiceNow AI Incident Assigner"
     PORT: int = 8000
+    RESOLVED_INC_EXCEL_FILE: str = "servicenow-diversion_inc-dumps.xlsx"
 
     # Database Settings
     DATABASE_URL: str = "sqlite:///./incident_assignment.db"

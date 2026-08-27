@@ -6,3 +6,5 @@ langsmith
 chromadb
 langchain_chroma
 langchain_ollama
+pandas
+openpyxl

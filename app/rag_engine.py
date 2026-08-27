@@ -1,4 +1,5 @@
 import chromadb
+import pandas
 from chromadb.config import Settings as ChromaSettings
 from langchain_chroma import Chroma
 from langchain_ollama import OllamaEmbeddings
@@ -41,33 +42,7 @@ class RAGEngine:
             embedding_function=self.embeddings,
         )
 
-    # ---------- write paths ----------
-
-    def add_resolved_incident(
-        self,
-        number: str,
-        short_description: str,
-        resolution: str,
-        resolved_by: str,
-    ) -> None:
-        """
-        Indexes a freshly resolved incident into ChromaDB so future similar
-        incidents can match against it.
-        """
-        text = f"{short_description} {resolution}"
-        metadata = {
-            "number": number,
-            "description": description,
-            "root_cause": root_cause,
-            "assignment_group": resolved_by,
-        }
-        # Use the incident number as the doc id so re-resolving the same
-        # ticket doesn't create duplicate embeddings.
-        doc = Document(page_content=text, metadata=metadata, id=number)
-        self.vectorstore.add_documents([doc])
-        print(f"Added resolved incident {number} to RAG (ChromaDB).")
-
-    def seed_historical_incidents(self, historical_tickets: list) -> None:
+    def seed_historical_incidents(self) -> None:
         """
         Bulk-loads the historical seed list into ChromaDB on first startup.
         Skips if the collection already has documents (idempotent across restarts).
@@ -82,21 +57,26 @@ class RAGEngine:
             )
             return
 
+        print("Reading excel file...")
+        df = pandas.read_excel(settings.RESOLVED_INC_EXCEL_FILE)
+        record_count = df["INC Number"].count()
         print(
-            f"Seeding {len(historical_tickets)} historical resolved incidents "
+            f"Seeding {record_count} historical resolved incidents "
             "into ChromaDB..."
         )
         documents = []
-        for ticket in historical_tickets:
-            text = f"{ticket['short_description']} {ticket['resolution']}"
+        for index,row in df.iterrows():
+            row_text = f'''
+            Description: {row["Description"]}
+            Root Cause: {row["Root Cause"]}
+            Assignment Group: {row['Assignment Group']}
+            '''
             metadata = {
-                "number": ticket["number"],
-                "short_description": ticket["short_description"],
-                "resolution": ticket["resolution"],
-                "resolved_by": ticket["resolved_by"],
+                "row_index":index,
+                "inc_number":row['INC Number']
             }
             documents.append(
-                Document(page_content=text, metadata=metadata, id=ticket["number"])
+                Document(page_content=row_text,metadata=metadata,id=row['INC Number'])
             )
         self.vectorstore.add_documents(documents)
         print("Historical incidents seeded into ChromaDB successfully.")
