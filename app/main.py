@@ -15,6 +15,7 @@ load_dotenv()
 from app.config import settings
 from app.servicenow_client import servicenow_client
 from app.rag_engine import rag_engine
+from app.diversion_engine import diversion_engine
 from langsmith.middleware import TracingMiddleware
 
 # Initialize FastAPI App
@@ -45,14 +46,16 @@ async def periodic_snow_pull():
             print("Running periodic ServiceNow incident sync...")
             new_incidents = servicenow_client.fetch_incidents_from_api()
             if new_incidents:
-                print(f"Ingested {len(new_incidents)} new unassigned incident(s).")
+                print(f"Ingested {len(new_incidents)} new unassigned incident(s). Running diversion...")
+                for incident in new_incidents:
+                    diversion_engine.assign(incident)
         except Exception as e:
             print(f"Error in periodic ServiceNow sync: {e}")
         # Wait 60 seconds between sync checks
-        await asyncio.sleep(60)
+        await asyncio.sleep(90)
 
 
 # API Endpoints
 @app.get("/app")
 def get_incidents(status: Optional[str] = None):
-    return {"massage":"weelcome"}
+    return {"massage": "weelcome"}

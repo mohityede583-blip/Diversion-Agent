@@ -42,6 +42,27 @@ class RAGEngine:
             embedding_function=self.embeddings,
         )
 
+    def get_related_inc(self, query: str):
+        """
+        Return the most relevant resolved incident for the given query.
+
+        Uses LangChain Chroma's similarity_search_with_score which returns
+        raw distance scores (lower distance = higher similarity).
+
+        Returns:
+            tuple[Document, float] | None:
+                (matched_document, distance_score) or None when there are
+                no documents in the collection.
+        """
+        results = self.vectorstore.similarity_search_with_score(query, k=1)
+        if not results:
+            return None
+        doc, score = results[0]
+        print(f"[RAG] Best match: {doc.metadata.get('inc_number')} | distance score: {score}")
+        return doc, score
+
+
+
     def seed_historical_incidents(self) -> None:
         """
         Bulk-loads the historical seed list into ChromaDB on first startup.
