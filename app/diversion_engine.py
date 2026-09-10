@@ -10,7 +10,7 @@ from app.config import settings
 SIMILARITY_THRESHOLD = 0.8
 
 # HIP assignment agent endpoint
-HIP_PUSH_URL = "http://localhost:8000/api/incidents/push"
+HIP_PUSH_URL = "http://localhost:8001/api/incidents/push"
 
 
 class DiversionEngine:
@@ -101,45 +101,46 @@ class DiversionEngine:
         Maps ServiceNow incident fields to the PushIncidentRequest schema.
         """
         payload = {
-            "number": incident.get("number", ""),
-            "short_description": incident.get("short_description", ""),
-            "description": incident.get("description"),
-            "category": incident.get("category", "L1 Support"),
-            "priority": incident.get("priority", "3"),
-            "urgency": incident.get("urgency", "3"),
-            "sla_limit": incident.get("sla_due"),
+            "number": str(incident.get("number", "")),
+            "short_description": str(incident.get("short_description", "")),
+            "description": str(incident.get("description")),
+            "category": str(incident.get("category", "L1 Support")),
+            "priority": str(incident.get("priority", "3")),
+            "urgency": str(incident.get("urgency", "3")),
+            "sla_limit": str(incident.get("sla_due")),
             "status": "Unassigned",
-            "assigned_to": incident.get("assigned_to"),
+            "assigned_to": str(incident.get("assigned_to")),
             "assigned_at": None,
-            "created_at": incident.get("opened_at"),
+            "created_at": str(incident.get("opened_at")),
             "rejection_count": 0,
             "rejected_associates": "[]",
-            "sys_id": incident.get("sys_id"),
-            "sys_class_name": incident.get("sys_class_name", "incident"),
+            "sys_id": str(incident.get("sys_id")),
+            "sys_class_name": str(incident.get("sys_class_name", "incident")),
             "sys_mod_count": int(incident.get("sys_mod_count", 0)),
-            "sys_updated_on": incident.get("sys_updated_on"),
-            "sys_updated_by": incident.get("sys_updated_by", "manual_push"),
-            "incident_state": incident.get("incident_state", "1"),
-            "impact": incident.get("impact", "3"),
-            "severity": incident.get("severity", "3"),
-            "subcategory": incident.get("subcategory"),
-            "close_code": incident.get("close_code"),
-            "close_notes": incident.get("close_notes"),
-            "made_sla": incident.get("made_sla"),
-            "hold_reason": incident.get("hold_reason"),
+            "sys_updated_on": str(incident.get("sys_updated_on")),
+            "sys_updated_by": str(incident.get("sys_updated_by", "manual_push")),
+            "incident_state": str(incident.get("incident_state", "1")),
+            "impact": str(incident.get("impact", "3")),
+            "severity": str(incident.get("severity", "3")),
+            "subcategory": str(incident.get("subcategory")),
+            "close_code": str(incident.get("close_code")),
+            "close_notes": str(incident.get("close_notes")),
+            "made_sla": str(incident.get("made_sla")),
+            "hold_reason": str(incident.get("hold_reason")),
             "reassignment_count": int(incident.get("reassignment_count", 0)),
             "reopen_count": int(incident.get("reopen_count", 0)),
-            "opened_at": incident.get("opened_at"),
-            "resolved_at": incident.get("resolved_at"),
-            "closed_at": incident.get("closed_at"),
-            "sla_due": incident.get("sla_due"),
-            "activity_due": incident.get("activity_due"),
-            "opened_by_ref": incident.get("opened_by"),
-            "caller_id_ref": incident.get("caller_id"),
-            "assignment_group_ref": incident.get("assignment_group"),
-            "assigned_to_ref": incident.get("assigned_to"),
-            "raw_payload": json.dumps(incident),
+            "opened_at": str(incident.get("opened_at")),
+            "resolved_at": str(incident.get("resolved_at")),
+            "closed_at": str(incident.get("closed_at")),
+            "sla_due": str(incident.get("sla_due")),
+            "activity_due": str(incident.get("activity_due")),
+            "opened_by_ref": str(incident.get("opened_by")),
+            "caller_id_ref": str(incident.get("caller_id")),
+            "assignment_group_ref": str(incident.get("assignment_group")),
+            "assigned_to_ref": str(incident.get("assigned_to")),
+            "raw_payload": None,
         }
+        print('push payload',json.dumps(payload))
 
         try:
             with httpx.Client(timeout=10.0) as client:
