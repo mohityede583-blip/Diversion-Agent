@@ -48,11 +48,15 @@ async def periodic_snow_pull():
             if new_incidents:
                 print(f"Ingested {len(new_incidents)} new unassigned incident(s). Running diversion...")
                 for incident in new_incidents:
+                    if incident.get("number") in servicenow_client.checked_inc:
+                        print(f"We have already check {incident.get("number")}. Hence ignored...")
+                        continue
                     diversion_engine.assign(incident)
+                    servicenow_client.checked_inc.add(incident.get("number"))
         except Exception as e:
             print(f"Error in periodic ServiceNow sync: {e}")
         # Wait 60 seconds between sync checks
-        await asyncio.sleep(90)
+        await asyncio.sleep(30)
 
 
 # API Endpoints

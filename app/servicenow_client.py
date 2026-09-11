@@ -10,6 +10,8 @@ class ServiceNowClient:
         self.user = settings.SERVICENOW_USER
         self.pwd = settings.SERVICENOW_PASSWORD
 
+    checked_inc=set()
+
     def fetch_incidents_from_api(self) -> list:
         """
         Simulates call to real ServiceNow Table API:
@@ -20,7 +22,7 @@ class ServiceNowClient:
             headers = {"Accept": "application/json"}
             query_url = f"{self.url}/api/now/table/incident"
             
-            last_2_min = datetime.now(timezone.utc) - timedelta(minutes=5)
+            last_2_min = datetime.now(timezone.utc) - timedelta(minutes=1)
             two_mins_ago = last_2_min.strftime("%Y-%m-%d %H:%M:%S")
             group_name = "HIP Global"
 

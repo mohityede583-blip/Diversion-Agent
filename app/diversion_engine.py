@@ -71,11 +71,10 @@ class DiversionEngine:
 
         # --- Weak / no match → HIP incident ---
         print(f"[DIVERSION] Incident {number} has no strong match; pushing to HIP agent.")
-        servicenow_client.assign_incident(
-            sys_id,
-            "HIP Global",
-            "This is HIP incident hence, diverting to assignment agent",
-        )
+
+        if incident.get("number") in servicenow_client.checked_inc:
+            return
+        servicenow_client.update_work_notes(sys_id,"This is HIP incident hence, diverting to assignment agent")
         self._push_to_hip_agent(incident)
 
     # ------------------------------------------------------------------
