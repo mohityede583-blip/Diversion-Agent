@@ -1,0 +1,7 @@
+Short Description
+Critical BusinessWorks JVM Heap Exhaustion and Engine Stoppage During Peak XML Payload Processing
+
+Description
+BusinessWorks engine encountered a critical
+java.lang.OutOfMemoryError
+(JVM heap exhaustion) during high-concurrency message processing. The incident was triggered by an unprecedented surge in upstream transaction volume combined with oversized XML payloads that exceeded the pre-configured 2GB memory allocation limit, causing the integration service to hang and stop processing inbound messages.
