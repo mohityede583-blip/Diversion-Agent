@@ -19,13 +19,14 @@ class ServiceNowClient:
             # Real API call
             headers = {"Accept": "application/json"}
             query_url = f"{self.url}/api/now/table/incident"
-            last_min = datetime.now(timezone.utc) - timedelta(minutes=2)
-            current_time = datetime.now(timezone.utc)
-            formatted_time_five = last_min.strftime("%Y-%m-%d %H:%M:%S")
-            formatted_time_current = current_time.strftime("%Y-%m-%d %H:%M:%S")
+            
+            last_2_min = datetime.now(timezone.utc) - timedelta(minutes=5)
+            two_mins_ago = last_2_min.strftime("%Y-%m-%d %H:%M:%S")
+            group_name = "HIP Global"
+
             params = {
                 "sysparm_limit": 20,
-                "sysparm_query": f"opened_at>={formatted_time_five}^opened_at<={formatted_time_current}^assignment_groupISEMPTY^active=true",
+                "sysparm_query": f"assignment_group.name={group_name}^sys_updated_on>={two_mins_ago}^active=true",
                 "sysparm_display_value": "true",
             }
             with httpx.Client(auth=(self.user, self.pwd), headers=headers, timeout=10.0) as client:
