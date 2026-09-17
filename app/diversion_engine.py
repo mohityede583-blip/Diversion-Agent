@@ -60,8 +60,6 @@ class DiversionEngine:
 
                 work_notes = (
                     f"[Auto-Assigned by Diversion Agent]\n"
-                    f"Matched resolved incident: {matched_inc}\n"
-                    f"Distance score: {score:.4f}\n"
                     f"Assignment group: {assignment_group}"
                 )
 
