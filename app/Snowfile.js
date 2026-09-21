@@ -23,7 +23,7 @@ function triggerAIIncidentAnalysis() {
     }
 
     // 3. User feedback message
-    g_form.addInfoMessage('✨ Analysising Incident ...');
+    g_form.addInfoMessage('✨ Analyzing Incident ...');
 
     // 4. Construct payload with exact current field states
     var payload = {
@@ -98,7 +98,7 @@ function showAIAnalysisModal(incNumber, analysisText, matchedIncidents) {
     contentBox.style.cssText = 'width: 100%; min-height: 250px; padding: 16px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-family: sans-serif; font-size: 14px; color: #1e293b; line-height: 1.6; background: #fafafa; box-sizing: border-box; white-space: pre-wrap; overflow-y: auto; max-height: 400px;';
     var safeText = analysisText || "No analysis details returned.";
     var formattedText = safeText
-        .replace(/Not a HIP Issue/gi, '<span style="background-color: #e0f2fe; color: #0369a1; border: 1px solid #7dd3fc; padding: 6px 12px; border-radius: 6px; font-size: 16px; font-weight: 900; display: inline-block; margin-bottom: 12px;">Not a HIP Issue</span>')
+        .replace(/\*?\*?\s*Not\s+(?:an|a)?\s*HIP\s+Issue\s*\*?\*?/gi, '\n<div style="background-color: #e0f2fe; color: #0369a1; border: 1px solid #7dd3fc; padding: 8px 16px; border-radius: 8px; font-size: 16px; font-weight: 900; display: inline-block; margin-bottom: 16px; box-shadow: 0 2px 4px rgba(3, 105, 161, 0.1);">Not an HIP Issue</div>\n')
         .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
 
     contentBox.innerHTML = formattedText;
@@ -120,7 +120,7 @@ function showAIAnalysisModal(incNumber, analysisText, matchedIncidents) {
 
             // Extract assignment group and set it
             var cleanText = analysisText.replace(/\*/g, '');
-            var groupMatch = cleanText.match(/Recommended Assignment Group:\s*([^\n\r]+)/i);
+            var groupMatch = cleanText.match(/Recommended Assignment Group:\s*([^(]+)/i);
             if (groupMatch && groupMatch[1]) {
                 var groupName = groupMatch[1].trim().replace(/\.$/, ''); // Remove trailing dot if present
                 // setDisplayValue is best for reference fields, but we also fallback to setValue
