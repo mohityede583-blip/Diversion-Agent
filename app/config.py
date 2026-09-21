@@ -38,7 +38,7 @@ class Settings(BaseSettings):
     # Pydantic-settings automatically reads from BOTH the .env file and the process
     # environment, with process environment taking precedence.
     model_config = SettingsConfigDict(
-        env_file=os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env"),
+        env_file=os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), ".env"),
         env_file_encoding="utf-8",
         extra="ignore",
     )
