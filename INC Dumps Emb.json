@@ -1,0 +1,122 @@
+[
+  {
+    "inc_number": "INC0012948",
+    "short_description": "Critical BusinessWorks JVM Heap Exhaustion and Engine Stoppage During Peak XML Payload Processing",
+    "description": "BusinessWorks engine encountered a critical java.lang.OutOfMemoryError (JVM heap exhaustion) during high-concurrency message processing. The incident was triggered by an unprecedented surge in upstream transaction volume combined with oversized XML payloads that exceeded the pre-configured 2GB memory allocation limit, causing the integration service to hang and stop processing inbound messages.",
+    "resolved_by": "Mohon Gupta"
+  },
+  {
+    "inc_number": "INC0012949",
+    "short_description": "Scheduled SFTP File Transfer Job Interruption Due to Network and Authentication Protocol Timeouts",
+    "description": "Scheduled batch file transfer via SFTP failed with a critical com.jcraft.jsch.JSchException: Connection timed out error, halting the automated directory polling job. The failure prevented the nightly ingestion of partner data feeds, leaving the staging directory empty and throwing continuous polling exceptions across the integration scheduler.",
+    "resolved_by": "Priya Sharma"
+  },
+  {
+    "inc_number": "INC0012950",
+    "short_description": "Database Staging Pipeline Failure Caused by Exclusive Row-Level Locks and Concurrent Batch Deadlocks",
+    "description": "Nightly database staging load failed abruptly with a severe database deadlock error (ORA-00060) due to conflicting concurrent batch inserts and updates performed on the STG_CUSTOMER table by multiple parallel threads, resulting in transaction rollbacks and workflow termination.",
+    "resolved_by": "Rahul Verma"
+  },
+  {
+    "inc_number": "INC0012951",
+    "short_description": "Cloud Workflow Service Integration Failure Due to Expired OAuth 2.0 Security Credentials and Invalid Token",
+    "description": "Cloud workflow service triggered via message queue failed repeatedly with an HTTP 401 Unauthorized error. Investigation revealed that the automated message consumer lost connection capabilities due to an expired OAuth 2.0 client credential secret, causing inbound queue messages to accumulate and eventually route to the dead-letter queue.",
+    "resolved_by": "Ananya Iyer"
+  },
+  {
+    "inc_number": "INC0012952",
+    "short_description": "Enterprise Gateway HTTP 504 Gateway Timeout Due to Downstream Microservice Connection Pool Exhaustion",
+    "description": "Gateway proxy returned persistent HTTP 504 Gateway Timeout responses for the /v1/customers REST endpoint. The timeout condition was precipitated by a sudden influx of client traffic that completely exhausted the downstream microservice connection pool and overwhelmed the underlying relational database with unoptimized queries.",
+    "resolved_by": "Vikram Malhotra"
+  },
+  {
+    "inc_number": "INC0012953",
+    "short_description": "Kafka Consumer Group Lag Spike and Partition Rebalance Storm Due to Slow Database Write Latency",
+    "description": "Enterprise message streaming platform experienced severe consumer group lag exceeding 50,000 messages. The lag was triggered by a cascading partition rebalance storm caused by downstream database write locks, preventing consumer heartbeats from reaching the cluster coordinator within the configured session timeout window.",
+    "resolved_by": "Neha Patel"
+  },
+  {
+    "inc_number": "INC0012954",
+    "short_description": "Enterprise Service Bus JMS Destination Full Exception Caused by Unacknowledged Subscriber Backpressure",
+    "description": "Message broker threw a JMSException: Destination full error on the INBOUND.ORDERS.TOPIC destination. The exception occurred because a downstream subscriber application crashed, leaving durable subscription messages unacknowledged and completely exhausting the allocated memory store quota on the broker node.",
+    "resolved_by": "Amit Deshmukh"
+  },
+  {
+    "inc_number": "INC0012955",
+    "short_description": "Managed File Transfer Cryptographic Decryption Failure Due to Expired PGP Private Key Ring",
+    "description": "Secure file transfer job failed with an OpenPGP Decryption Error: No secret key found exception. The failure was caused by an automated key rotation policy update that omitted the synchronization of the new private key ring onto the remote partner decryption staging directory, blocking the morning settlement file processing.",
+    "resolved_by": "Sneha Kulkarni"
+  },
+  {
+    "inc_number": "INC0012956",
+    "short_description": "Distributed Data Warehouse Incremental Ingestion Failure Caused by Schema Drift and Type Mismatch",
+    "description": "Incremental data warehouse load pipeline terminated abruptly with a DataException: Column length mismatch error. The error was triggered by an unannounced upstream schema modification where a source system string attribute expanded from VARCHAR(50) to VARCHAR(100), causing the staging transformation mapping to overflow.",
+    "resolved_by": "Rohan Joshi"
+  },
+  {
+    "inc_number": "INC0012957",
+    "short_description": "Cloud Serverless Function Timeout Exception During Heavy Payload JSON Transformation Execution",
+    "description": "Cloud serverless data transformation function experienced widespread execution timeouts after running continuously for the maximum allowable limit of 300 seconds. The performance degradation was traced to an inefficient recursive JSON parsing script handling nested object arrays with thousands of child nodes without proper memory caching.",
+    "resolved_by": "Divya Nair"
+  },
+  {
+    "inc_number": "INC0012958",
+    "short_description": "RESTful Gateway Rate Limit Threshold Exceeded Error Causing Mass Client Rejections with HTTP 429",
+    "description": "Public-facing gateway proxy began throwing HTTP 429 Too Many Requests errors to a major enterprise partner integration. Investigation showed that the partner system bypassed local caching logic, executing thousands of concurrent polling requests that saturated the allocated rate-limiting token bucket algorithm quota.",
+    "resolved_by": "Kiran Rao"
+  },
+  {
+    "inc_number": "INC0012959",
+    "short_description": "Enterprise Service Bus SSL/TLS Handshake Failure Due to Untrusted Self-Signed Certificate Authority Chain",
+    "description": "Integration service threw a SSLHandshakeException: PKIX path building failed error when attempting to establish an outbound HTTPS connection to an external vendor endpoint. The issue occurred because the vendor replaced their SSL certificate without updating the local truststore trust anchors on the ESB runtime server.",
+    "resolved_by": "Siddharth Menon"
+  },
+  {
+    "inc_number": "INC0012960",
+    "short_description": "Enterprise Service Bus File Poller Resource Leak Causing File System Handle Exhaustion and Lockup",
+    "description": "Enterprise Service Bus file poller service became completely unresponsive and stopped picking up files from the input directory. System diagnostics revealed a file descriptor exhaustion state (IOException: Too many open files) caused by file streams failing to close properly during exception paths in a custom Java transformation service.",
+    "resolved_by": "Pooja Hegde"
+  },
+  {
+    "inc_number": "INC0012961",
+    "short_description": "Batch Data Synchronization Job Failure Caused by Foreign Key Constraint Violation on Target Table",
+    "description": "Multi-threaded data synchronization job failed with an IntegrityConstraintViolationException during a bulk insert operation. The failure happened because parent dimension records were delayed in transmission, causing child fact table rows to arrive prematurely and violate referential integrity constraints.",
+    "resolved_by": "Arjun Kapoor"
+  },
+  {
+    "inc_number": "INC0012962",
+    "short_description": "Cloud Storage Bucket Event Notification Trigger Failure Causing by Missing IAM Permissions Policy",
+    "description": "Cloud storage event-driven automation pipeline failed to execute when new files were uploaded to the ingestion bucket. Audit logs revealed an Access Denied error because a recent security audit stripped the service account of the required GetObject and ListBucket IAM roles.",
+    "resolved_by": "Meera Nambiar"
+  },
+  {
+    "inc_number": "INC0012963",
+    "short_description": "Distributed Transaction Coordinator Rollback Due to Network Partition Between Microservices",
+    "description": "Distributed saga-based transaction coordinator aborted an order fulfillment workflow with a TransactionRolledBackException. A transient network partition between the payment gateway service and the inventory reservation database caused a distributed lock timeout, triggering an automatic compensation rollback cascade.",
+    "resolved_by": "Karan Johar"
+  },
+  {
+    "inc_number": "INC0012964",
+    "short_description": "Managed File Transfer Cluster Node Split-Brain Condition Causing Duplicate Job Execution",
+    "description": "Clustered file transfer engine entered a split-brain condition where both primary and secondary nodes attempted to process the same scheduled directory transfer simultaneously, resulting in file locking conflicts and data corruption risks.",
+    "resolved_by": "Tanvi Shah"
+  },
+  {
+    "inc_number": "INC0012965",
+    "short_description": "Enterprise Service Bus Transform Mapping Exception Caused by Unescaped Special Characters in Input XML",
+    "description": "Integration service threw a runtime TransformerException: Invalid byte 2 of 3-byte UTF-8 sequence error during XML payload transformation. The failure was caused by an upstream system injecting raw binary control characters and unescaped HTML entities into a customer description field, breaking the XML parser validation engine.",
+    "resolved_by": "Aloknath Sharma"
+  },
+  {
+    "inc_number": "INC0012966",
+    "short_description": "Cloud API Management Service OAuth Token Introspection Latency Spike Causing Gateway Bottlenecks",
+    "description": "API gateway proxy experienced extreme performance degradation due to high latency when validating client OAuth 2.0 tokens against the centralized identity provider authorization server, causing requests to back up in the gateway queue.",
+    "resolved_by": "Geeta Basra"
+  },
+  {
+    "inc_number": "INC0012967",
+    "short_description": "Bulk Data Extraction Job Failure Caused by Out-of-Disk Space Condition on Database Temp Segment",
+    "description": "Nightly database extraction workflow failed abruptly with an ORA-1652: unable to extend temp segment error. Massive parallel sorting operations generated by an unindexed multi-table join query completely filled the allocated temporary tablespace partition on the database server.",
+    "resolved_by": "Manish Malhotra"
+  }
+]
