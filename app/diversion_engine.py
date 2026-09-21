@@ -137,7 +137,7 @@ class DiversionEngine:
             "assigned_to_ref": str(incident.get("assigned_to")),
             "raw_payload": None,
         }
-        print('push payload',json.dumps(payload))
+        print('push payload',json.dumps(payload))        
 
         try:
             with httpx.Client(timeout=10.0) as client:
