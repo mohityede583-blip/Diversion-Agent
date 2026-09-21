@@ -61,6 +61,21 @@ class RAGEngine:
         print(f"[RAG] Best match: {doc.metadata.get('inc_number')} | distance score: {score}")
         return doc, score
 
+    def get_top_related_incs(self, query: str, k: int = 3) -> list:
+        """
+        Return the top-k most relevant resolved incidents for the given query.
+
+        Returns:
+            list[tuple[Document, float]]:
+                List of (matched_document, distance_score) tuples, ordered by
+                relevance (lowest distance first). Empty list when there are
+                no documents in the collection.
+        """
+        results = self.vectorstore.similarity_search_with_score(query, k=k)
+        for doc, score in results:
+            print(f"[RAG] Match: {doc.metadata.get('inc_number')} | distance score: {score}")
+        return results
+
 
 
     def seed_historical_incidents(self) -> None:
