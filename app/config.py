@@ -15,6 +15,9 @@ class Settings(BaseSettings):
     OLLAMA_BASE_URL: str = "http://localhost:11434"
     OLLAMA_TEXT_MODEL: str = "qwen3:1.7b"  # Fast local model
     OLLAMA_EMBED_MODEL: str = "qwen3-embedding:4b"  # Native embedding model
+    OLLAMA_CLAUDE_BASE_URL: str = "https://ollama.com"
+    OLLAMA_CLAUDE_TEXT_MODEL: str = "gpt-oss:20b"
+    OLLAMA_API_KEY: str = os.getenv("OLLAMA_API_KEY")
 
     # LangSmith Settings (read from .env / process env automatically by pydantic-settings)
     LANGSMITH_TRACING: str = "True"

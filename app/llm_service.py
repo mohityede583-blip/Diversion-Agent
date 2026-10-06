@@ -5,9 +5,22 @@ from langchain_core.output_parsers import StrOutputParser
 from app.config import settings
 from app.rag_engine import rag_engine
 from app.integrations.elk import elk_engine
+from langsmith import traceable
 
 
 # LangChain Ollama LLM instance
+llm_cloud = ChatOllama(
+    model=settings.OLLAMA_CLAUDE_TEXT_MODEL,
+    base_url=settings.OLLAMA_CLAUDE_BASE_URL,
+    client_kwargs={
+        "headers": {
+            "Authorization": f"Bearer {settings.OLLAMA_API_KEY}"
+            # Some custom proxies or gateways might expect an 'x-api-key' header instead:
+            # "x-api-key": "your_ollama_api_key_here"
+        }
+    }
+)
+
 llm = ChatOllama(
     model=settings.OLLAMA_TEXT_MODEL,
     base_url=settings.OLLAMA_BASE_URL,
@@ -52,9 +65,9 @@ INCIDENT_ANALYSIS_PROMPT = ChatPromptTemplate.from_messages([
 ])
 
 # Chain: prompt → LLM → parse string output
-analysis_chain = INCIDENT_ANALYSIS_PROMPT | llm | StrOutputParser()
+analysis_chain = INCIDENT_ANALYSIS_PROMPT | llm_cloud | StrOutputParser()
 
-
+@traceable(name='analyse_incident',run_type='chain')
 def analyse_incident(short_description: str, description: str, work_notes: str) -> dict:
     """
     1. Fetch top-3 similar resolved incidents from ChromaDB.
